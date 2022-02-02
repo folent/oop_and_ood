@@ -3,9 +3,8 @@ export class Point {
   public y: number;
 
   // constructor();
-  // constructor(x:number, y:number);
   constructor(x?:number, y?:number) {
-    if(x && y) {
+    if(x || y) {
       this.x = x;
       this.y = y;
     } else {
@@ -15,26 +14,35 @@ export class Point {
   }
 
   toString() {
-    return `(${this.x},${this.y})`
+    return `(${this.x}, ${this.y})`
   }
 
-  Distance(): string;
-  Distance(other: Point): string;
-  Distance(x: number, y: number): string;
-  Distance(x?: number, y?: number, other?: Point): string {
+  distance(): number;
+  distance(other: any): number;
+  distance(x: number, y: number): number;
+  distance(x?: number, y?: number, other?: Point): number {
     if(other) {
-      return `(${other.x}, ${other.y})`
+      const X = (Math.abs(other.x) - Math.abs(this.x)) ** 2;
+      const Y = (Math.abs(other.y) - Math.abs(this.y)) ** 2;
+
+      const dist = Math.sqrt(X + Y);
+      return dist;
     }
     else if (x && y) {
-      return `(${x},${y})`
+      const X = (Math.abs(x) - Math.abs(this.x)) ** 2;
+      const Y = (Math.abs(y) - Math.abs(this.y)) ** 2;
+
+      const dist = Math.sqrt(X + Y);
+      return dist;
     } else {
-      return `(${this.x},${this.y})`
+      const dist = Math.sqrt(this.x * this.x + this.y * this.y);
+      return dist;
     }
   }
 
 }
 
 let a = new Point();
-console.log(a.Distance(1,2));
-console.log(a.Distance());
-console.log(a.Distance(new Point(1,2)));
+console.log(a.distance(1,2));
+console.log(a.distance());
+console.log(a.distance(new Point(1,2)));
