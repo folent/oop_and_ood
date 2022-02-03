@@ -1,8 +1,15 @@
+function getDistance(x1, y1, x2, y2) {
+  const X = (x2 - x1) ** 2;
+  const Y = (y2 - y1) ** 2;
+
+  return Math.sqrt(X + Y);
+}
+
 export class Point {
   public x: number;
   public y: number;
 
-  // constructor();
+  constructor();
   constructor(x?:number, y?:number) {
     if(x || y) {
       this.x = x;
@@ -18,31 +25,25 @@ export class Point {
   }
 
   distance(): number;
-  distance(other: any): number;
+  distance(other?: any): number;
   distance(x: number, y: number): number;
-  distance(x?: number, y?: number, other?: Point): number {
-    if(other) {
-      const X = (Math.abs(other.x) - Math.abs(this.x)) ** 2;
-      const Y = (Math.abs(other.y) - Math.abs(this.y)) ** 2;
+  distance(other?: number | Point, xOrY?: number, y?: number): number {
 
-      const dist = Math.sqrt(X + Y);
-      return dist;
+    let workX;
+    let workY;
+    if(other instanceof Point) {
+      workX = other.x;
+      workY = other.y;
     }
-    else if (x && y) {
-      const X = (Math.abs(x) - Math.abs(this.x)) ** 2;
-      const Y = (Math.abs(y) - Math.abs(this.y)) ** 2;
-
-      const dist = Math.sqrt(X + Y);
-      return dist;
+    else if (!other && !xOrY && !y){
+      workX = 0;
+      workY = 0;
     } else {
-      const dist = Math.sqrt(this.x * this.x + this.y * this.y);
-      return dist;
+      workX = other;
+      workY = xOrY;
     }
+
+    return getDistance(this.x, this.y, workX, workY);
   }
 
 }
-
-let a = new Point();
-console.log(a.distance(1,2));
-console.log(a.distance());
-console.log(a.distance(new Point(1,2)));
